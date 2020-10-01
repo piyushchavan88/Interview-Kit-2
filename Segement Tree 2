@@ -1,0 +1,70 @@
+vll seg;
+vll lazy;
+void build(ll node,ll l,ll r){
+    if(l==r){
+        //seg[node]=...
+        return;
+    }
+    ll mid=l+(r-l)/2;
+    build(2*node+1,l,mid);
+    build(2*node+2,mid+1,r);
+    //seg[node]=(seg[2*node+1]+seg[2*node+2])%mod;
+    return;
+}
+void updatepos(ll node,ll l,ll r,ll &pos,ll &val){
+    if(pos<l || pos>r)
+        return;
+    if(l==r){
+        //seg[node]=...
+        return;
+    }
+    ll mid=l+(r-l)/2;
+    if(pos<=mid)
+        updatepos(2*node+1,l,mid,pos,val);
+    else
+        updatepos(2*node+2,mid+1,r,pos,val);
+   //seg[node]=(seg[2*node+1]+seg[2*node+2])%mod;
+    return;
+}
+void lazyupdate(ll node,ll l,ll r,ll &rl,ll &rr,ll &val){
+    if(lazy[node]!=0){
+        //seg[node]=(seg[2*node+1]+seg[2*node+2])%mod;
+        //lazy[2*node+1]=lazy[node];
+        //lazy[2*node+2]=lazy[node];
+        //lazy[node]=0;
+    }
+    if(l>rr || r<rl)
+        return;
+    if(l>=rl && r<=rr){
+        /*seg[node]=(val*((expo[r]-expo[l-1]+mod)%mod))%mod;
+        lazy[node]=0;
+        lazy[2*node+1]=val;
+        lazy[2*node+2]=val;*/
+        return;
+    }
+    ll mid=l+(r-l)/2;
+    lazyupdate(2*node+1,l,mid,rl,rr,val);
+    lazyupdate(2*node+2,mid+1,r,rl,rr,val);
+    //seg[node]=(seg[2*node+1]+seg[2*node+2])%mod;
+    return;
+}
+ll query(ll node,ll ml,ll mr,ll l,ll r){
+    if(lazy[node]!=0){
+        /*seg[node]=(lazy[node]*((expo[mr]-expo[ml-1]+mod)%mod))%mod;
+        lazy[2*node+1]=lazy[node];
+        lazy[2*node+2]=lazy[node];
+        lazy[node]=0;*/
+    }
+    if(mr<l || ml>r){
+        return 0;
+    }
+    if(ml>=l && mr<=r){
+        return seg[node];
+    }
+    ll mid=ml+(mr-ml)/2;
+    ll left=query(2*node+1,ml,mid,l,r);
+    ll right=query(2*node+2,mid+1,mr,l,r);
+    ll ans;
+    //ans=....;
+    return ans;
+}
