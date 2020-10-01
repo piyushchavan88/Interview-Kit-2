@@ -1,0 +1,21 @@
+void bfs(ll v,vector<vector<ll> > &edge,vector<bool> &vis,vector<ll> &level)
+{
+    queue<ll> q;
+    q.push(v);
+    vis[v]=1;
+    level[v]=0;
+    while(!q.empty())
+    {
+        ll ve=q.front();q.pop();
+        for(ll i=0;i<edge[ve].size();i++)
+        {
+            ll vee=edge[ve][i];
+            if(!vis[vee])
+            {
+                vis[vee]=1;
+                level[vee]=level[ve]+1;
+                q.push(vee);
+            }
+        }
+    }
+}
